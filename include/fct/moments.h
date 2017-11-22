@@ -20,6 +20,14 @@
   */
 typedef struct moments* Moments;
 
+/** The structure rgb. Basicly a vector.
+  */
+typedef struct{
+  double red;
+  double green;
+  double blue;
+}rgb;
+
 /* Public Functions */
 
 /** Creates Moments for the given list of pixels.
@@ -54,17 +62,17 @@ int getM0(Moments moments);
 /** M1 corresponds to sum of colors
   * @return The field M1 (always an array of 3 elements for RGB)
   */
-double* getM1(Moments moments);
+rgb getM1(Moments moments);
 
 /** M2 corresponds to sum of colors^2
   * @return The field M2 (always an array of 3 elements for RGB)
   */
-double* getM2(Moments moments);
+rgb getM2(Moments moments);
 
 /* Privates Functions */
 
-static double* computeM1(int pixels[][3],int nbPixels);
+static rgb computeM1(int pixels[][3],int nbPixels);
 
-static double* computeM2(int pixels[][3],int nbPixels);
+static rgb computeM2(int pixels[][3],int nbPixels);
 
 #endif

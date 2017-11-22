@@ -3,7 +3,7 @@
 
 CC = gcc
 CFLAGS = -W -Wall -ansi -pedantic
-LDFLAGS =
+LDFLAGS = -lm
 
 #DIRECTORIES
 ROOT = ../../
