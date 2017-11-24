@@ -11,7 +11,7 @@
    * @file moments.c Contains the implementations of everythings declared in
    * moments.h
    */
-#include "../../include/fct/moments.h"
+#include "fct/moments.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

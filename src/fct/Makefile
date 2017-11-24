@@ -20,9 +20,8 @@ CFILE = \033[0;34m
 all: $(OBJ)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	@$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ -c $< -I ../../include/ $(CFLAGS)
 	@echo "$(CFILE)$(@:$(OBJDIR)%=%)$(CNONE) from $(CFILE)$<$(CNONE)"
 
 clean:
 	rm -rf $(OBJDIR)/*.o *~
-

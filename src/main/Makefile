@@ -29,11 +29,12 @@ CFILE = \033[0;34m
 all: $(EXEC) $(TEST)
 
 $(EXEC): $(OBJDIRMAIN)$(EXEC).o $(OTHOBJ)
-	@$(CC) $^ $(LDFLAGS) -o $(BINDIR)$@
+	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
+	@$(CC) $^ $(LDFLAGS) -I ../../include/ -o $(BINDIR)$@
 	@echo  "\t$(CEXEC)$(EXEC)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(OBJDIRMAIN)%.o: %.c
-	@$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ -I ../../include/ -c $< $(CFLAGS)
 	@echo "$(CFILE)$(@:$(OBJDIRMAIN)%=%)$(CNONE) from $(CFILE)$<$(CNONE)"
 
 clean:
