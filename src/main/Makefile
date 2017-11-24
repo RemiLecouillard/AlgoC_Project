@@ -3,7 +3,7 @@
 
 CC = gcc
 CFLAGS = -W -Wall -ansi -pedantic
-LDFLAGS = -lm
+LDFLAGS = -limage64 -lm
 
 #DIRECTORIES
 ROOT = ../../
@@ -11,6 +11,7 @@ BINDIR = $(ROOT)bin/
 SRCDIR = $(ROOT)src/
 OBJDIR = $(ROOT)obj/
 OBJDIRMAIN = $(OBJDIR)main/
+LIBS = -L$(ROOT)/lib/
 
 #SOURCES & BINARIES
 SRC  = $(wildcard *.c)
@@ -30,11 +31,11 @@ all: $(EXEC) $(TEST)
 
 $(EXEC): $(OBJDIRMAIN)$(EXEC).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ $(LDFLAGS) -I ../../include/ -o $(BINDIR)$@
+	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
 	@echo  "\t$(CEXEC)$(EXEC)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(OBJDIRMAIN)%.o: %.c
-	@$(CC) -o $@ -I ../../include/ -c $< $(CFLAGS)
+	@$(CC) -o $@ -I $(ROOT)include/ -c $< $(CFLAGS)
 	@echo "$(CFILE)$(@:$(OBJDIRMAIN)%=%)$(CNONE) from $(CFILE)$<$(CNONE)"
 
 clean:

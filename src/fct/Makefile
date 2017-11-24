@@ -6,8 +6,9 @@ CC = gcc
 CFLAGS = -W -Wall -ansi -pedantic
 
 #SOURCES & BINARIES
+ROOT = ../../
 SRCDIR =
-OBJDIR = ../../obj/
+OBJDIR = $(ROOT)obj/
 SRC  = $(wildcard $(SRCDIR)*.c)
 OBJ  = $(SRC:$(SRCDIR)%.c=$(OBJDIR)%.o)
 
@@ -20,7 +21,7 @@ CFILE = \033[0;34m
 all: $(OBJ)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
-	@$(CC) -o $@ -c $< -I ../../include/ $(CFLAGS)
+	@$(CC) -o $@ -c $< -I $(ROOT)include/ $(CFLAGS)
 	@echo "$(CFILE)$(@:$(OBJDIR)%=%)$(CNONE) from $(CFILE)$<$(CNONE)"
 
 clean:

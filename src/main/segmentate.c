@@ -8,12 +8,12 @@
  * or revised without written permission of the authors.
  */
 #include <stdio.h>
+#include "image/image.h"
 
 int main(int argc, char *argv[]) {
   if (argc > 1) {
     printf("%s\n", argv[1]);
   }
-   /* Your code here ... */
 
    return 0;
 }
