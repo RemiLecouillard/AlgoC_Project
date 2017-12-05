@@ -52,6 +52,12 @@ void addNeighbourg(Region region){
 
 }
 
+int isSame(Region r1,Region r2) {
+
+  return 0;
+}
+
+
 static double getFusionCost(Region reg1,Region reg2){
 
   return 0.0;

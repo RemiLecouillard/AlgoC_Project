@@ -27,7 +27,9 @@ void deleteIndex(LinkedList list,int index);
 
 int getIndex(LinkedList list,Region reg);
 
-void deleteRegion(LinkedList list,Region reg);
+int deleteRegion(LinkedList list,Region reg);
+
+void addRegion(LinkedList list,Region reg);
 
 int getSize(LinkedList list);
 
