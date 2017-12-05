@@ -24,13 +24,15 @@ struct pRegion{
 struct region{
   Moments moments;
   LinkedList neighbourgs;
-  int nbNeighbourgs;
 };
 
 Region createRegion(Moments moments){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
   preg->region = reg;
+
+  reg->moments = moments;
+  reg->neighbourgs = createList();
 
   return preg;
 }
@@ -45,7 +47,13 @@ Region getBestNeighbourgs(Region region){
 }
 
 void fusion(Region reg1,Region reg2){
+  struct region* res = malloc(sizeof(struct region));
 
+  res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
+
+
+  reg1->region = res;
+  reg2->region = res;
 }
 
 void addNeighbourg(Region region){
@@ -53,8 +61,19 @@ void addNeighbourg(Region region){
 }
 
 int isSame(Region r1,Region r2) {
+  return r1->region == r2->region ? 1 : 0;
+}
 
-  return 0;
+rgb getColor(Region reg) {
+  int nbPixels = getM0(reg->region->moments);
+  rgb col = getM1(reg->region->moments);
+
+  /* each section of rgb is a sum of all pixels. To get the average colors
+  of the region we must devide it by the number of pixels */
+  col.red = col.red/nbPixels;
+  col.blue = col.blue/nbPixels;
+  col.green = col.green/nbPixels;
+  return col;
 }
 
 

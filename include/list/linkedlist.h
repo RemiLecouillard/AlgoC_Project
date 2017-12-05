@@ -33,6 +33,10 @@ void addRegion(LinkedList list,Region reg);
 
 int getSize(LinkedList list);
 
+LinkedList mergeList(LinkedList l1, LinkedList l2);
+
+void destroyList(LinkedList list);
+
 Node getIterator(LinkedList list);
 
 int hasNext(Node node);
@@ -40,5 +44,9 @@ int hasNext(Node node);
 Node getNext(Node node);
 
 Region getElement(Node node);
+
+void destroyNode(Node node);
+
+static Node copyNode(Node node);
 
 #endif

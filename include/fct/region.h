@@ -29,6 +29,8 @@ void addNeighbourg(Region region);
 
 int isSame(Region r1,Region r2);
 
+rgb getColor(Region reg);
+
 static double getFusionCost(Region reg1,Region reg2);
 
 #endif

@@ -58,7 +58,9 @@ void deleteIndex(LinkedList list,int index){
     index--;
   }
 
+  /* destroying the node at the given index */
   last->next = iter->next;
+  destroyNode(iter);
 
   if(last->next == NULL) {  /* if it is the last member */
     list->last = last;
@@ -107,7 +109,7 @@ int deleteRegion(LinkedList list,Region reg){
     }
 
     list->size = list->size - 1;
-
+    destroyNode(iter);
     isDeleted = 1;
   }
   return isDeleted;
@@ -119,13 +121,64 @@ void addRegion(LinkedList list,Region reg){
   new->element = reg;
   new->next = NULL;
 
-  list->last->next = new;
+  /* if this is the first element */
+  if (list->size == 0) {
+    list->first = new;
+  } else {
+    list->last->next = new;
+  }
   list->last = new;
+
+
   list->size = list->size + 1;
 }
 
 int getSize(LinkedList list){
   return list->size;
+}
+
+LinkedList mergeList(LinkedList l1, LinkedList l2){
+  LinkedList list = createList();
+  Node iter = getIterator(l1);
+  Node last;
+
+  last = list->first;
+
+  while(hasNext(iter)){
+    iter = getNext(iter);
+    last->next = copyNode(iter);
+    last = getNext(last);
+  }
+
+  iter = getIterator(l2);
+  while(hasNext(iter)){
+    iter = getNext(iter);
+    last->next = copyNode(iter);
+    last = getNext(last);
+  }
+
+  list->size = l1->size + l2->size;
+
+  return list;
+}
+
+void destroyList(LinkedList list){
+  Node iter = getIterator(list);
+  Node next = iter;
+
+  while(hasNext(iter)) {
+    iter = next;
+    next = getNext(iter);
+    destroyNode(iter);
+  }
+
+  free(list);
+}
+
+static Node copyNode(Node node){
+  Node new = malloc(sizeof(struct node));
+  new->element = node->element;
+  return new;
 }
 
 Node getIterator(LinkedList list){
@@ -142,4 +195,8 @@ Node getNext(Node node){
 
 Region getElement(Node node){
   return node->element;
+}
+
+void destroyNode(Node node) {
+  free(node);
 }
