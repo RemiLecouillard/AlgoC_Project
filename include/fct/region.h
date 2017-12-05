@@ -13,11 +13,11 @@
 #ifndef _REGION_H
 #define _REGION_H
 
-#include "image/image.h"
+#include "fct/moments.h"
 
 typedef struct pRegion* Region;
 
-Region createRegion(int pixels[][3],int nbPixels);
+Region createRegion(Moments moments);
 
 void destroyRegion(Region region);
 

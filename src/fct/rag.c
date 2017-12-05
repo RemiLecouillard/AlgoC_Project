@@ -11,13 +11,43 @@
   * @file rag.c
   */
 #include "fct/region.h"
+#include "list/linkedlist.h"
+#include "image/image.h"
 #include "fct/rag.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 
 struct rag {
-  Image image;
+  image image;
   int height, width;
   LinkedList blocks;
+};
+
+Rag createRag(image img,int height,int width) {
+ return NULL;
+}
+
+image getRegionImage(Rag rag) {
+ return NULL;
+}
+
+int getHeight(Rag rag) {
+  return 0;
+}
+
+int getWidth(Rag rag) {
+  return 0;
+}
+
+LinkedList getBlocks(Rag rag) {
+ return NULL;
+}
+
+static void initNeighbourgs(Rag rag) {
+
+}
+
+static LinkedList initRegion(Rag rag) {
+ return NULL;
 }

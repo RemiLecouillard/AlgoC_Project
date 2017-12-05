@@ -12,6 +12,7 @@
   */
 #include "fct/region.h"
 #include "fct/moments.h"
+#include "list/linkedlist.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -22,14 +23,36 @@ struct pRegion{
 
 struct region{
   Moments moments;
-  Regions* neighbourgs;
+  LinkedList neighbourgs;
   int nbNeighbourgs;
 };
 
-Region createRegion(){
+Region createRegion(Moments moments){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
   preg->region = reg;
 
   return preg;
+}
+
+void destroyRegion(Region region){
+
+}
+
+Region getBestNeighbourgs(Region region){
+
+  return NULL;
+}
+
+void fusion(Region reg1,Region reg2){
+
+}
+
+void addNeighbourg(Region region){
+
+}
+
+static double getFusionCost(Region reg1,Region reg2){
+
+  return 0.0;
 }

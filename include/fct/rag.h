@@ -15,12 +15,13 @@
 #define _RAG_H
 
 #include "fct/region.h"
+#include "list/linkedlist.h"
 
 typedef struct rag* Rag;
 
-Rag createRag(Image img,int height,int width);
+Rag createRag(image img,int height,int width);
 
-Image getRegionImage(Rag rag);
+image getRegionImage(Rag rag);
 
 int getHeight(Rag rag);
 
