@@ -15,6 +15,8 @@
 
 #include "fct/moments.h"
 
+typedef struct linkedlist* LinkedList;
+
 typedef struct pRegion* Region;
 
 Region createRegion(Moments moments);
@@ -25,7 +27,9 @@ Region getBestNeighbourgs(Region region);
 
 void fusion(Region reg1,Region reg2);
 
-void addNeighbourg(Region region);
+LinkedList getNeighbourgs(Region reg);
+
+void addNeighbourg(Region region, Region neighbourg);
 
 int isSame(Region r1,Region r2);
 

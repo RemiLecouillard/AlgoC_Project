@@ -10,12 +10,11 @@
 /**
   * @file region.c
   */
+#include "list/linkedlist.h"
 #include "fct/region.h"
 #include "fct/moments.h"
-#include "list/linkedlist.h"
 #include <stdlib.h>
 #include <stdio.h>
-
 
 struct pRegion{
   struct region *region;
@@ -56,8 +55,12 @@ void fusion(Region reg1,Region reg2){
   reg2->region = res;
 }
 
-void addNeighbourg(Region region){
+LinkedList getNeighbourgs(Region reg){
+  return reg->region->neighbourgs;
+}
 
+void addNeighbourg(Region region, Region neighbourg){
+  addRegion(getNeighbourgs(region), neighbourg);
 }
 
 int isSame(Region r1,Region r2) {

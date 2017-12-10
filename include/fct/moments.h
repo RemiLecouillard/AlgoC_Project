@@ -35,7 +35,7 @@ typedef struct{
   * @param nbPixels the number of pixels in the list
   * @return moments the moments corresponding to the pixels
   */
-Moments createMoments(int pixels[][3],int nbPixels);
+Moments createMoments(int** pixels,int nbPixels);
 
 /** destroyes the given moments by calling free
   */
@@ -71,8 +71,8 @@ rgb getM2(Moments moments);
 
 /* Privates Functions */
 
-static rgb computeM1(int pixels[][3],int nbPixels);
+static rgb computeM1(int** pixels,int nbPixels);
 
-static rgb computeM2(int pixels[][3],int nbPixels);
+static rgb computeM2(int** pixels,int nbPixels);
 
 #endif
