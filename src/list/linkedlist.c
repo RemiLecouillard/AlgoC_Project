@@ -27,6 +27,12 @@ struct linkedlist {
   int size;
 };
 
+/** Copies a Node. Without its next pointer.
+  * @param node the node the perform the operations.
+  * @return the copy of the node.
+  */
+static Node copyNode(Node node);
+
 LinkedList createList(){
   LinkedList list = malloc(sizeof(struct linkedlist));
   list->size = 0;

@@ -69,10 +69,4 @@ rgb getM1(Moments moments);
   */
 rgb getM2(Moments moments);
 
-/* Privates Functions */
-
-static rgb computeM1(int pixels[][3],int nbPixels);
-
-static rgb computeM2(int pixels[][3],int nbPixels);
-
 #endif

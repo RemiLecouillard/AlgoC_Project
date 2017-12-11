@@ -22,6 +22,10 @@ struct moments {
   rgb m2; /** The summing ^2 of colors (RGB)*/
 };
 
+static rgb computeM1(int pixels[][3],int nbPixels);
+
+static rgb computeM2(int pixels[][3],int nbPixels);
+
 Moments createMoments(int pixels[][3],int nbPixels){
   Moments moments = malloc(sizeof(struct moments));
   moments->m0 = nbPixels;

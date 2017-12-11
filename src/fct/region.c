@@ -15,6 +15,7 @@
 #include "list/linkedlist.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 
 struct pRegion{
@@ -24,26 +25,65 @@ struct pRegion{
 struct region{
   Moments moments;
   LinkedList neighbourgs;
+  double quadraticError;
 };
 
-Region createRegion(Moments moments){
+static double getFusionCost(Region reg1,Region reg2){
+
+  return 0.0;
+}
+
+static void destroyStructRegion(struct region* region) {
+  destroyMoments(region->moments);
+  destroyList(region->neighbourgs);
+  free(region);
+}
+
+Region createRegion(int pixels[][3],int nbPixels){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
+  rgb rgb;
+  int i;
   preg->region = reg;
 
-  reg->moments = moments;
+  reg->moments = createMoments(pixels, nbPixels);
   reg->neighbourgs = createList();
+  reg->quadraticError = 0;
+
+  rgb = getColor(preg);
+
+  for (i = 0; i < nbPixels; i ++) {
+    reg->quadraticError += pow(pixels[i][0] - rgb.green, 2) + pow(pixels[i][1]
+    - rgb.blue, 2) + pow(pixels[i][2] - rgb.red, 2);
+  }
 
   return preg;
 }
 
 void destroyRegion(Region region){
-
+  destroyStructRegion(region->region);
+  free(region);
 }
 
 Region getBestNeighbourgs(Region region){
+  struct region* self = region->region;
+  Node iterator;
+  double min, tmp;
+  Region current, best;
 
-  return NULL;
+  min = 0;
+  iterator = getIterator(self->neighbourgs);
+
+  while(hasNext(iterator)) {
+    current = getElement(iterator);
+    tmp = getFusionCost(region, current);
+    if (tmp > min) {
+      min = tmp;
+      best = current;
+    }
+  }
+
+  return best;
 }
 
 void fusion(Region reg1,Region reg2){
@@ -51,13 +91,14 @@ void fusion(Region reg1,Region reg2){
 
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
 
-
+  destroyStructRegion(reg1->region);
+  destroyStructRegion(reg2->region);
   reg1->region = res;
   reg2->region = res;
 }
 
-void addNeighbourg(Region region){
-
+void addNeighbourg(Region region,Region neighbourg){
+  addRegion(region->region->neighbourgs, neighbourg);
 }
 
 int isSame(Region r1,Region r2) {
@@ -74,10 +115,4 @@ rgb getColor(Region reg) {
   col.blue = col.blue/nbPixels;
   col.green = col.green/nbPixels;
   return col;
-}
-
-
-static double getFusionCost(Region reg1,Region reg2){
-
-  return 0.0;
 }

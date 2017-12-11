@@ -114,10 +114,4 @@ Region getElement(Node node);
   */
 void destroyNode(Node node);
 
-/** Copies a Node. Without its next pointer.
-  * @param node the node the perform the operations.
-  * @return the copy of the node.
-  */
-static Node copyNode(Node node);
-
 #endif
