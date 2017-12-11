@@ -78,7 +78,7 @@ static LinkedList initRegion(Rag rag) {
 
   LinkedList list = createList();
   Region reg = NULL;
-  Moments moments = NULL;
+
   int height = image_give_hauteur(rag->image);
   int width = image_give_largeur(rag->image);
   int pos_bloc_i, pos_bloc_j;
@@ -109,8 +109,7 @@ static LinkedList initRegion(Rag rag) {
       }
 
       /*Convert the block into a region*/
-      moments = createMoments(pix, nb_pix);
-      reg = createRegion(moments);
+      reg = createRegion(pix, nb_pix);
       addRegion(list, reg);
 
       for(i=0; i<nb_pix; i++){

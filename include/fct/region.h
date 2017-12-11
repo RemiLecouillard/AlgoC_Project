@@ -19,7 +19,7 @@ typedef struct linkedlist* LinkedList;
 
 typedef struct pRegion* Region;
 
-Region createRegion(int pixels[][3],int nbPixels);
+Region createRegion(int** pixels,int nbPixels);
 
 void destroyRegion(Region region);
 

@@ -38,7 +38,7 @@ static void destroyStructRegion(struct region* region) {
   free(region);
 }
 
-Region createRegion(int pixels[][3],int nbPixels){
+Region createRegion(int** pixels,int nbPixels){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
   rgb rgb;
