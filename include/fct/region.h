@@ -15,6 +15,8 @@
 
 #include "fct/moments.h"
 
+typedef struct linkedlist* LinkedList;
+
 typedef struct pRegion* Region;
 
 Region createRegion(int pixels[][3],int nbPixels);
@@ -24,6 +26,8 @@ void destroyRegion(Region region);
 Region getBestNeighbourgs(Region region);
 
 void fusion(Region reg1,Region reg2);
+
+LinkedList getNeighbourgs(Region reg);
 
 void addNeighbourg(Region region,Region neighbourg);
 

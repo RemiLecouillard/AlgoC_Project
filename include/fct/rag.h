@@ -15,7 +15,6 @@
 #define _RAG_H
 
 #include "fct/region.h"
-#include "list/linkedlist.h"
 
 typedef struct rag* Rag;
 

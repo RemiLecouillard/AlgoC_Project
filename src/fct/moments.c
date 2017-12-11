@@ -22,11 +22,11 @@ struct moments {
   rgb m2; /** The summing ^2 of colors (RGB)*/
 };
 
-static rgb computeM1(int pixels[][3],int nbPixels);
+static rgb computeM1(int** pixels,int nbPixels);
 
-static rgb computeM2(int pixels[][3],int nbPixels);
+static rgb computeM2(int** pixels,int nbPixels);
 
-Moments createMoments(int pixels[][3],int nbPixels){
+Moments createMoments(int** pixels,int nbPixels){
   Moments moments = malloc(sizeof(struct moments));
   moments->m0 = nbPixels;
   moments->m1 = computeM1(pixels, nbPixels);
@@ -73,23 +73,22 @@ rgb getM2(Moments moments){
   return moments->m2;
 }
 
-static rgb computeM1(int pixels[][3],int nbPixels){
+static rgb computeM1(int** pixels,int nbPixels){
   int i;
   rgb m1;
-  m1.red = 0;
-  m1.green = 0;
-  m1.blue = 0;
-
+  m1.red = 0.0;
+  m1.green = 0.0;
+  m1.blue = 0.0;
   for (i = 0; i < nbPixels; i ++) {
-    m1.red += pixels[i][0];
-    m1.green += pixels[i][1];
-    m1.blue += pixels[i][2];
+    m1.red += (double)pixels[i][0];
+    m1.green += (double)pixels[i][1];
+    m1.blue += (double)pixels[i][2];
   }
 
   return m1;
 }
 
-static rgb computeM2(int pixels[][3],int nbPixels){
+static rgb computeM2(int** pixels,int nbPixels){
   int i;
   rgb m2;
   m2.red = 0;

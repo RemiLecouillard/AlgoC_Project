@@ -35,7 +35,7 @@ all: $(EXEC) $(TESTMOMENTS) $(TESTLIST) $(TESTRAG) $(TESTREG)
 
 $(EXEC): $(OBJDIRMAIN)$(EXEC).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
+	@$(CC) $^ -I $(ROOT)include/image -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
 	@echo  "\t$(CEXEC)$(EXEC)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(TESTMOMENTS): $(OBJDIRMAIN)$(TESTMOMENTS).o $(OTHOBJ)
