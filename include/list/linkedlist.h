@@ -14,8 +14,6 @@
 #ifndef _LINKEDLIST_H
 #define _LINKEDLIST_H
 
-#include "fct/region.h"
-
 /** This is a pointer to a structure of a node.
   * Every elements of a list is a node.
   * Can be used as an iterator.
@@ -26,6 +24,8 @@ typedef struct node* Node;
   * The list is indexed from 0 to size - 1.
   */
 typedef struct linkedlist* LinkedList;
+
+#include "fct/region.h"
 
 /** Creates a LinkedList.
   * @return the created list.

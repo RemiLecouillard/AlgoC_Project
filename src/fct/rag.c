@@ -25,6 +25,10 @@ struct rag {
   LinkedList blocks;
 };
 
+static void initNeighbourgs(Rag rag);
+
+static LinkedList initRegion(Rag rag);
+
 Rag createRag(image img,int height,int width) {
   Rag rag = malloc(sizeof(struct rag));
   rag->image = img;

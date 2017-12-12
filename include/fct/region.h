@@ -13,11 +13,11 @@
 #ifndef _REGION_H
 #define _REGION_H
 
-#include "fct/moments.h"
-
-typedef struct linkedlist* LinkedList;
-
 typedef struct pRegion* Region;
+
+#include "fct/moments.h"
+#include "list/linkedlist.h"
+
 
 Region createRegion(int** pixels,int nbPixels);
 

@@ -27,16 +27,9 @@ struct region{
   double quadraticError;
 };
 
-static double getFusionCost(Region reg1,Region reg2){
+static double getFusionCost(Region reg1,Region reg2);
 
-  return 0.0;
-}
-
-static void destroyStructRegion(struct region* region) {
-  destroyMoments(region->moments);
-  destroyList(region->neighbourgs);
-  free(region);
-}
+static void destroyStructRegion(struct region* region);
 
 Region createRegion(int** pixels,int nbPixels){
   struct region *reg = malloc(sizeof(struct region));
@@ -118,4 +111,15 @@ rgb getColor(Region reg) {
   col.blue = col.blue/nbPixels;
   col.green = col.green/nbPixels;
   return col;
+}
+
+static double getFusionCost(Region reg1,Region reg2){
+
+  return 0.0;
+}
+
+static void destroyStructRegion(struct region* region) {
+  destroyMoments(region->moments);
+  destroyList(region->neighbourgs);
+  free(region);
 }

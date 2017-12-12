@@ -28,8 +28,4 @@ int getWidth(Rag rag);
 
 LinkedList getBlocks(Rag rag);
 
-static void initNeighbourgs(Rag rag);
-
-static LinkedList initRegion(Rag rag);
-
 #endif
