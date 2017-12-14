@@ -39,15 +39,57 @@ Rag createRag(image img,int height,int width) {
     initNeighbourgs(rag);
     return rag;
   }else{
-    printf("Size error\n");
+    printf("Block size impossible\n");
     return NULL;
   }
-
-
 }
 
 image getRegionImage(Rag rag) {
- return NULL;
+  image img = FAIRE_image();
+  LinkedList list = getBlocks(rag);
+  Node iter = getIterator(list);
+  Node next = iter;
+  Region region = NULL;
+  rgb color;
+  Point position;
+  int rgb[3];
+  int pos_x, pos_y, index, line;
+  int img_height = image_give_hauteur(rag->image);
+  int img_width = image_give_largeur(rag->image);
+  int nb_bloc_width = img_width/rag->width;
+
+  image_initialize(img, 3, img_width ,img_height);
+  image_debut(img);
+  index = 0;
+  line = 0;
+
+  /*Route all regions of the RAG*/
+  while(hasNext(iter)) {
+    iter = next;
+    next = getNext(iter);
+    region = getElement(iter);
+    color = getColor(region);
+    rgb[0] = color.red;
+    rgb[1] = color.green;
+    rgb[2] = color.blue;
+
+    /*Set the same color to all the pixels in the block*/
+    for (pos_y = line*rag->height; pos_y < (line+1)*rag->height; pos_y++) {
+      for (pos_x = (index%nb_bloc_width)*rag->width; pos_x < ((index+1)%nb_bloc_width)*rag->width; pos_x++) {
+        COORDX(position) = pos_x;
+        COORDY(position) = pos_y;
+        image_move_to(img, &position);
+        image_ecrire_pixel(img, rgb);
+      }
+    }
+
+    index++;
+    if(index%nb_bloc_width == 0){
+      line++;
+    }
+  }
+
+  return img;
 }
 
 int getHeight(Rag rag) {
@@ -65,66 +107,81 @@ LinkedList getBlocks(Rag rag) {
 static void initNeighbourgs(Rag rag) {
   Region region = NULL;
   Region neighbourg = NULL;
-  Node iter = getIterator(getBlocks(rag));
+  LinkedList list = getBlocks(rag);
+  Node iter = getIterator(list);
   Node next = iter;
-  int num_region;
+  int index;
+  int width = image_give_largeur(rag->image)/rag->width;
+  int height = image_give_hauteur(rag->image)/rag->height;
 
+  /*Route all regions of the RAG*/
   while(hasNext(iter)) {
     iter = next;
     next = getNext(iter);
-    /*Get all elements next to the region and addNeighbourg*/
     region = getElement(iter);
-    addNeighbourg(region, region);
+    index = getIndex(list, region);
+
+    /*left neighbourg*/
+    if((index-1)%width != width-1 && (index-1)%width != -1){
+      neighbourg = get(list, index-1);
+      addNeighbourg(region, neighbourg);
+    }
+    /*right neighbourg*/
+    if((index+1)%width != 0){
+      neighbourg = get(list, index+1);
+      addNeighbourg(region, neighbourg);
+    }
+    /*neighbourg from above*/
+    if(index-width >= 0){
+      neighbourg = get(list, index-width);
+      addNeighbourg(region, neighbourg);
+    }
+    /* neighbourg from bellow*/
+    if(index+width < width*height){
+      neighbourg = get(list, index+width);
+      addNeighbourg(region, neighbourg);
+    }
   }
 }
 
 static LinkedList initRegion(Rag rag) {
-
   LinkedList list = createList();
   Region reg = NULL;
-
   int height = image_give_hauteur(rag->image);
   int width = image_give_largeur(rag->image);
-  int pos_bloc_i, pos_bloc_j;
-  int pos_pix_i, pos_pix_j;
+  int pos_bloc_x, pos_bloc_y;
+  int pos_pix_x, pos_pix_y;
   int i;
   int** pix;
+  int num_pix = 0;
+  Point position;
+  /*initialize the list of pixels included in one bloc*/
   pix = malloc(sizeof(int*) * rag->height*rag->width);
   for (i=0; i < 3; i++) {
     pix[i] = malloc(sizeof(int));
   }
 
-  int nb_pix = 0;
-  Point position;
-
   image_debut(rag->image);
   /*route the image block by block*/
-  for(pos_bloc_i=0; pos_bloc_i<height; pos_bloc_i+=rag->height){
-    for(pos_bloc_j=0; pos_bloc_j<width; pos_bloc_j+=rag->width){
+  for(pos_bloc_y=0; pos_bloc_y<height; pos_bloc_y+=rag->height){
+    for(pos_bloc_x=0; pos_bloc_x<width; pos_bloc_x+=rag->width){
       /*route the bloc pixel by pixel*/
-      for(pos_pix_i=pos_bloc_i; pos_pix_i<pos_bloc_i+rag->height; pos_pix_i++){
-        for(pos_pix_j=pos_bloc_j; pos_pix_j<pos_bloc_j+rag->width; pos_pix_j++){
-          COORDX(position) = pos_pix_i;
-          COORDY(position) = pos_pix_j;
+      for(pos_pix_y=pos_bloc_y; pos_pix_y<pos_bloc_y+rag->height; pos_pix_y++){
+        for(pos_pix_x=pos_bloc_x; pos_pix_x<pos_bloc_x+rag->width; pos_pix_x++){
+          COORDX(position) = pos_pix_x;
+          COORDY(position) = pos_pix_y;
           image_move_to(rag->image, &position);
-          pix[nb_pix] = image_lire_pixel(rag->image);
-          nb_pix++;
+          pix[num_pix] = image_lire_pixel(rag->image);
+          num_pix++;
         }
       }
 
       /*Convert the block into a region*/
       reg = createRegion(pix, nb_pix);
       addRegion(list, reg);
-
-      for(i=0; i<nb_pix; i++){
-        pix[i][0] = 0;
-        pix[i][1] = 0;
-        pix[i][2] = 0;
-      }
-      nb_pix = 0;
+      num_pix = 0;
     }
   }
 
   return list;
-
 }

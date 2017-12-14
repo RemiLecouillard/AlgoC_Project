@@ -33,7 +33,7 @@ static int     image_dim_1_to_stream_priv(image,FILE*);
 static int     image_dim_3_to_stream_priv(image,FILE*);
 static void    lire_commentaires_priv(FILE*);
 static void    read_ascii_priv(image,FILE*);
-static PFdist default_distance[] = 
+static PFdist default_distance[] =
 {
   NULL,
   private_default_distance_dim1,
@@ -97,17 +97,17 @@ int image_charger(image self,char* nom)
   int    valeur_max;
   size_t taille_comp_RGB = sizeof(Comp_rgb);
   char   retour_chariot;
-  
-  
-  
+
+
+
   id = fopen(nom,MODE_LECTURE);
-  
+
   if(id == NULL)
     return (-1);
-  
-  
+
+
   fscanf(id,"%3s",MagicNumber);
-  
+
   if((MagicNumber[0] != 'P') || (
 				 (MagicNumber[1] != '6')&&
 				 (MagicNumber[1] != '5')&&
@@ -120,20 +120,20 @@ int image_charger(image self,char* nom)
       return(-2);
     }
   if(MagicNumber[1] == '6')
-    Dim = 3;  
+    Dim = 3;
   else
     Dim =1;
-  
+
   lire_commentaires_priv(id);
-  
-  
+
+
   fscanf(id,"%d",&Largeur);
   fscanf(id,"%d",&Hauteur);
   Longueur = Dim*Largeur;
   Taille  = Longueur*Hauteur;
-  
+
   fscanf(id,"%d%c",&valeur_max,&retour_chariot);
-  
+
   if(Largeur <=0 || Hauteur <= 0 || valeur_max <=1)
     {
       fprintf(stderr," Image non lue :  Contient des valeurs aberrantes\n");
@@ -145,7 +145,7 @@ int image_charger(image self,char* nom)
   else
     fread(Debut,taille_comp_RGB,Taille,id);
   fclose(id);
-  
+
   if( (Dim <=3) && (Dim >=0) )
     Distance = default_distance[Dim];
 
@@ -169,7 +169,7 @@ int image_sauvegarder(image self,char* nom)
     }
 
   id = fopen(nom,MODE_ECRITURE);
-  
+
   if(id == NULL)
     return -1;
 
@@ -184,7 +184,7 @@ int image_to_stream(image self,FILE* id)
       NULL,
       image_dim_3_to_stream_priv,
     };
-  
+
   if( (Dim != 1)&&(Dim != 3) )
     {
       fprintf(stderr,"Image Non sauvegardable\n");
@@ -197,7 +197,7 @@ int* image_lire_pixel(image self)
 {
   static int tab[DIM_MAX];
   int i;
-  
+
   for(i=0;i<Dim;i++)
     tab[i] = (int)(*(Courant+i));
 
@@ -217,7 +217,7 @@ int image_get_comp(image self,point p,int comp)
 void image_ecrire_pixel(image self,int* tab)
 {
   int i;
-  
+
   for(i=0;i<Dim;i++)
     *(Courant+i) = (Comp_rgb)tab[i];
 }
@@ -245,7 +245,7 @@ booleen image_move_to(image self,point p)
 
   if(!private_valide(self,i,j))
     return faux;
-  
+
   Courant = Debut + DEPLACEMENT(i,j);
 
   return vrai;
@@ -258,7 +258,7 @@ void  image_read_pixel(image self,int i,int j,Comp_rgb* buf)
   assert(buf);
   assert(private_valide(self,i,j));
 
-  
+
  ptr = Debut + DEPLACEMENT(i,j);
  for(i=0;i<Dim;i++)
    buf[i]=ptr[i];
@@ -268,10 +268,10 @@ void  image_write_pixel(image self,int i,int j,Comp_rgb* buf)
   Comp_rgb* ptr;
 
   assert(self);
-  assert(buf);  
+  assert(buf);
   assert(private_valide(self,i,j));
 
-  
+
  ptr = Debut + DEPLACEMENT(i,j);
  for(i=0;i<Dim;i++)
    ptr[i]=buf[i];
@@ -283,7 +283,7 @@ booleen image_pixel_dessus(image self)
 
   if(pixel -Debut < 0)
     return faux;
-  
+
   Courant = pixel;
   return vrai;
 }
@@ -295,7 +295,7 @@ booleen image_pixel_dessous(image self)
 
   if(pixel -Debut >= Taille)
     return faux;
-  
+
   Courant = pixel;
   return vrai;
 }
@@ -303,7 +303,7 @@ booleen image_pixel_dessous(image self)
 booleen image_pixel_gauche(image self)
 {
   int nb_pixel = (int)(Courant - Debut);
-  
+
   if( nb_pixel%Longueur == 0 )
     return faux;
 
@@ -344,21 +344,21 @@ double image_distance(image self,point p,move_type move)
       valide1 = private_valide(self,y,x+1);
       valide2 = private_valide(self,y+1,x+1);
       break;
-   
+
     case UP:
       pix1 = Debut + DEPLACEMENT(y,x);
       pix2 = pix1+Dim;
       valide1 = private_valide(self,y,x);
       valide2 = private_valide(self,y,x+1);
       break;
-      
+
     case LEFT:
       pix1 = Debut + DEPLACEMENT(y,x);
       pix2 = pix1+ Longueur;
       valide1 = private_valide(self,y,x);
       valide2 = private_valide(self,y+1,x);
       break;
-      
+
     case DOWN:
       pix1 = Debut + DEPLACEMENT(y+1,x);
       pix2 = pix1+Dim;
@@ -415,7 +415,7 @@ int image_give_hauteur(image self)
 static booleen private_valide(image self,int i,int j)
 {
   booleen valide;
-  
+
   valide = (i>=0)&&(j>=0);
   valide = valide&&(i<Hauteur)&&(j<Largeur);
 
@@ -472,7 +472,7 @@ static double private_default_distance_dim3(int* pix1,int*
 }
 
 
-  
+
 /****************************************************************************/
 /* Sauvegarde au format pgm */
 /****************************************************************************/
@@ -484,22 +484,22 @@ static int image_dim_1_to_stream_priv(image self,FILE* id)
   struct tm *temps_local = localtime(&temps);
   int var_max = 255;
   int nb_composantes_ecrites;
-  
+
   strftime(date_format,sizeof date_format, "%x %X", temps_local);
-  
-  
+
+
   fprintf(id,"P5\n");
   fprintf(id,"# Derniere  sauvegarde : %s\n",date_format);
   fprintf(id,"%d %d\n",Largeur,Hauteur);
   fprintf(id,"%d\n",var_max);
-  
+
   nb_composantes_ecrites = fwrite(Debut,taille_ind,Taille,id);
-  
+
   if(nb_composantes_ecrites < Taille)
-    fprintf(stderr,"ERREUR SYSTEME : Plus de place sur disque"); 
-  
+    fprintf(stderr,"ERREUR SYSTEME : Plus de place sur disque");
+
   fclose(id);
-  
+
   return 0;
 }
 /****************************************************************************/
@@ -513,22 +513,22 @@ static int image_dim_3_to_stream_priv(image self,FILE* id)
   time_t temps = time(NULL);
   struct tm *temps_local = localtime(&temps);
   int nb_comp_ecrites;
-  
+
   strftime(date_format,sizeof date_format, "%x %X", temps_local);
-    
-  
+
+
   fprintf(id,"P6\n");
   fprintf(id,"# Derniere  sauvegarde : %s\n",date_format);
   fprintf(id,"%d %d\n",Largeur,Hauteur);
   fprintf(id,"%d\n",var_max);
-  
+
   nb_comp_ecrites = fwrite(Debut,taille_comp_RGB,Taille,id);
-  
+
   if(nb_comp_ecrites < Taille)
-    fprintf(stderr,"ERREUR SYSTEME : Plus de place sur disque"); 
-  
+    fprintf(stderr,"ERREUR SYSTEME : Plus de place sur disque");
+
   fclose(id);
-  
+
   return (0);
 }
 /* Explicite */
@@ -536,7 +536,7 @@ static void lire_commentaires_priv(FILE* id)
 {
   char c1,c2;
   char   commentaire[100];
-  
+
   fscanf(id,"%c%c",&c1,&c2);
   while(c2 =='#')
     {
@@ -560,10 +560,7 @@ static void    read_ascii_priv(image self,FILE* id)
 
   while(fscanf(id,"%d",&val) != EOF)
     {
-      *ptr = val;    
+      *ptr = val;
       ptr++;
     }
 }
-
-
-
