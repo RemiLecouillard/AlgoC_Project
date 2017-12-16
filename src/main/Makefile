@@ -35,28 +35,28 @@ all: $(EXEC) $(TESTMOMENTS) $(TESTLIST) $(TESTRAG) $(TESTREG)
 
 $(EXEC): $(OBJDIRMAIN)$(EXEC).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/image -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
-	@echo  "\t$(CEXEC)$(EXEC)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
+	@$(CC) $^ -I $(ROOT)include/image -o $(BINDIR)$@.out $(LIBS) $(LDFLAGS)
+	@echo  "\t$(CEXEC)$(EXEC).out$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(TESTMOMENTS): $(OBJDIRMAIN)$(TESTMOMENTS).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
-	@echo  "\t$(CEXEC)$(TESTMOMENTS)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
+	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@.out $(LIBS) $(LDFLAGS)
+	@echo  "\t$(CEXEC)$(TESTMOMENTS).out$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(TESTLIST): $(OBJDIRMAIN)$(TESTLIST).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
-	@echo  "\t$(CEXEC)$(TESTLIST)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
+	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@.out $(LIBS) $(LDFLAGS)
+	@echo  "\t$(CEXEC)$(TESTLIST).out$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(TESTRAG): $(OBJDIRMAIN)$(TESTRAG).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
-	@echo  "\t$(CEXEC)$(TESTRAG)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
+	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@.out $(LIBS) $(LDFLAGS)
+	@echo  "\t$(CEXEC)$(TESTRAG).out$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(TESTREG): $(OBJDIRMAIN)$(TESTREG).o $(OTHOBJ)
 	@if [ ! -d $(ROOT)bin ]; then mkdir $(ROOT)bin;fi
-	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@ $(LIBS) $(LDFLAGS)
-	@echo  "\t$(CEXEC)$(TESTREG)$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
+	@$(CC) $^ -I $(ROOT)include/ -o $(BINDIR)$@.out $(LIBS) $(LDFLAGS)
+	@echo  "\t$(CEXEC)$(TESTREG).out$(CNONE) Compiled in $(CDIR)$(BINDIR:$(ROOT)%=%)$(CNONE)"
 
 $(OBJDIRMAIN)%.o: %.c
 	@$(CC) -o $@ -I $(ROOT)include/ -c $< $(CFLAGS)
