@@ -114,8 +114,17 @@ rgb getColor(Region reg) {
 }
 
 static double getFusionCost(Region reg1,Region reg2){
-
-  return 0.0;
+  double cost, norm;
+  Moments A,B;
+  rgb col;
+  A = reg1->region->moments;
+  B = reg2->region->moments;
+  col.red = getColor(reg1).red - getColor(reg2).red;
+  col.green = getColor(reg1).green - getColor(reg2).green;
+  col.blue = getColor(reg1).blue - getColor(reg2).blue;
+  norm = sqrt(pow(col.blue, 2) + pow(col.green, 2) + pow(col.red, 2));
+  cost = ( getM0(A)*getM0(B)/(getM0(A)+getM0(B)) ) * norm;
+  return cost;
 }
 
 static void destroyStructRegion(struct region* region) {
