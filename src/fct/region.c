@@ -59,14 +59,14 @@ void destroyRegion(Region region){
 
 Region getBestNeighbourgs(Region region){
   struct region* self = region->region;
-  Node iterator;
+  Iterator iterator;
   double min, tmp;
   Region current, best;
 
   min = 0;
   iterator = getIterator(self->neighbourgs);
 
-  while(hasNext(iterator)) {
+  while(moveNext(iterator)) {
     current = getElement(iterator);
     tmp = getFusionCost(region, current);
     if (tmp > min) {

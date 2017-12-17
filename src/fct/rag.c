@@ -47,8 +47,7 @@ Rag createRag(image img,int height,int width) {
 image getRegionImage(Rag rag) {
   image img = FAIRE_image();
   LinkedList list = getBlocks(rag);
-  Node iter = getIterator(list);
-  Node next = iter;
+  Iterator iter = getIterator(list);
   Region region = NULL;
   rgb color;
   Point position;
@@ -64,9 +63,7 @@ image getRegionImage(Rag rag) {
   line = 0;
 
   /*Route all regions of the RAG*/
-  while(hasNext(iter)) {
-    iter = next;
-    next = getNext(iter);
+  while(moveNext(iter)) {
     region = getElement(iter);
     color = getColor(region);
     rgb[0] = color.red;
@@ -108,16 +105,13 @@ static void initNeighbourgs(Rag rag) {
   Region region = NULL;
   Region neighbourg = NULL;
   LinkedList list = getBlocks(rag);
-  Node iter = getIterator(list);
-  Node next = iter;
+  Iterator iter = getIterator(list);
   int index;
   int width = image_give_largeur(rag->image)/rag->width;
   int height = image_give_hauteur(rag->image)/rag->height;
 
   /*Route all regions of the RAG*/
-  while(hasNext(iter)) {
-    iter = next;
-    next = getNext(iter);
+  while(moveNext(iter)) {
     region = getElement(iter);
     index = getIndex(list, region);
 
@@ -177,7 +171,7 @@ static LinkedList initRegion(Rag rag) {
       }
 
       /*Convert the block into a region*/
-      reg = createRegion(pix, nb_pix);
+      reg = createRegion(pix, num_pix);
       addRegion(list, reg);
       num_pix = 0;
     }

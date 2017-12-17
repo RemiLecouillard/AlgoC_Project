@@ -27,6 +27,10 @@ struct linkedlist {
   int size;
 };
 
+struct iterator {
+  Node current;
+};
+
 /** Copies a Node. Without its next pointer.
   * @param node the node the perform the operations.
   * @return the copy of the node.
@@ -40,27 +44,26 @@ LinkedList createList(){
 }
 
 Region get(LinkedList list,int index){
-  Node iter = getIterator(list);
+  Iterator iter = getIterator(list);
 
   assert(list->size > index);
 
-  while(index) {
-    iter = getNext(iter);
-    index--;
+  while(index--) {
+    moveNext(iter);
   }
 
   return getElement(iter);
 }
 
 void deleteIndex(LinkedList list,int index){
-  Node iter = getIterator(list);
+  Node iter = list->first;
   Node last;
 
   assert(list->size > index);
 
   while(index) {
     last = iter;
-    iter = getNext(iter);
+    iter = iter->next;
     index--;
   }
 
@@ -76,13 +79,12 @@ void deleteIndex(LinkedList list,int index){
 }
 
 int getIndex(LinkedList list,Region reg){
-  Node iter = getIterator(list);
+  Iterator iter = getIterator(list);
   int index;
 
   index = 0;
 
-  while(!isSame(getElement(iter), reg) && hasNext(iter)) {
-    iter = getNext(iter);
+  while(!isSame(getElement(iter), reg) && moveNext(iter)) {
     index++;
   }
 
@@ -90,34 +92,36 @@ int getIndex(LinkedList list,Region reg){
   if (!isSame(getElement(iter), reg)) {
     index = -1;
   }
+  destroyIterator(iter);
 
   return index;
 }
 
 int deleteRegion(LinkedList list,Region reg){
-  Node iter = getIterator(list);
+  Iterator iter = getIterator(list);
   Node last;
   int isDeleted;
 
   isDeleted = 0;
 
-  while (!isSame(getElement(iter), reg) && hasNext(iter)) {
-    last = iter;
-    iter = getNext(iter);
-  }
+  do{
+    last = iter->current;
+  } while (!isSame(getElement(iter), reg) && moveNext(iter));
 
-  /* if the region has not been found */
+  /* if the region has been found */
   if (isSame(getElement(iter), reg)) {
-    last->next = iter->next;
+    last->next = iter->current->next;
 
     if(last->next == NULL) {  /* if it is the last member */
       list->last = last;
     }
 
     list->size = list->size - 1;
-    destroyNode(iter);
     isDeleted = 1;
   }
+
+  destroyIterator(iter);
+
   return isDeleted;
 }
 
@@ -145,39 +149,46 @@ int getSize(LinkedList list){
 
 LinkedList mergeList(LinkedList l1, LinkedList l2){
   LinkedList list = createList();
-  Node iter = getIterator(l1);
-  Node last;
+  Iterator iter;
+  Node last, tmp;
 
-  last = list->first;
-
-  while(hasNext(iter)){
-    iter = getNext(iter);
-    last->next = copyNode(iter);
-    last = getNext(last);
+  iter = getIterator(l1);
+  if (moveNext(iter)) {
+    /* Init the first element of the list */
+    last = copyNode(iter->current);
+    list->first = last;
   }
 
+  /* copy the first list in the new list */
+  while(moveNext(iter)) {
+    tmp = copyNode(iter->current);
+    last->next = tmp;
+    last =tmp;
+  }
+
+  destroyIterator(iter);
   iter = getIterator(l2);
-  while(hasNext(iter)){
-    iter = getNext(iter);
-    last->next = copyNode(iter);
-    last = getNext(last);
+  /* copy the second list in the new list */
+  while(moveNext(iter)) {
+    tmp = copyNode(iter->current);
+    last->next = tmp;
+    last =tmp;
   }
 
+  list->last = last;
   list->size = l1->size + l2->size;
 
   return list;
 }
 
 void destroyList(LinkedList list){
-  Node iter = getIterator(list);
-  Node next = iter;
+  Iterator iter = getIterator(list);
 
-  while(hasNext(iter)) {
-    iter = next;
-    next = getNext(iter);
-    destroyNode(iter);
+  while(moveNext(iter)) {
+    destroyNode(iter->current);
   }
 
+  destroyIterator(iter);
   free(list);
 }
 
@@ -187,22 +198,36 @@ static Node copyNode(Node node){
   return new;
 }
 
-Node getIterator(LinkedList list){
-  return list->first;
-}
-
-int hasNext(Node node){
-  return node->next != NULL ? 1 : 0;
-}
-
-Node getNext(Node node){
-  return node->next;
-}
-
-Region getElement(Node node){
-  return node->element;
+Iterator getIterator(LinkedList list){
+  Iterator iter = malloc(sizeof(Iterator));
+  Node first = malloc(sizeof(Node));
+  first->next = list->first;
+  iter->current = first;
+  return iter;
 }
 
 void destroyNode(Node node) {
   free(node);
+}
+
+int moveNext(Iterator iter) {
+  Node next;
+
+  next = iter->current->next;
+
+  if (next) { /* If there is a next one */
+    iter->current = next;
+    return 1;
+  } else {
+    /* Nothing here because the iterator stays at the last element of the list */
+    return 0;
+  }
+}
+
+Region getElement(Iterator iter){
+  return iter->current->element;
+}
+
+void destroyIterator(Iterator iter) {
+  free(iter);
 }

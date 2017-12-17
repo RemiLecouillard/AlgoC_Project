@@ -28,7 +28,7 @@
      rgb color;
      int nb_reg;
      int num_reg = 0;
-     Node iter, next, iter_neighbour, next_neighbour = NULL;
+     Iterator iter, iter_neighbour = NULL;
 
      input = FAIRE_image();
      image_charger(input, input_name);
@@ -51,23 +51,17 @@
      if(rag != NULL){
 
        iter = getIterator(getBlocks(rag));
-       next = iter;
 
-       while(hasNext(iter)) {
-         iter = next;
-         next = getNext(iter);
+       while(moveNext(iter)) {
          region = getElement(iter);
          color = getColor(region);
          printf("Region %d => R:%d G:%d B:%d\n", num_reg, (int)color.red, (int)color.green, (int)color.blue);
 
          iter_neighbour = getIterator(getNeighbourgs(region));
-         next_neighbour = iter_neighbour;
 
          printf("--> neighbourgs regions : ");
 
-         while(hasNext(iter_neighbour)) {
-           iter_neighbour = next_neighbour;
-           next_neighbour = getNext(iter_neighbour);
+         while(moveNext(iter_neighbour)) {
            region_neighbour = getElement(iter_neighbour);
            nb_reg =  getIndex(getBlocks(rag),region_neighbour);
            printf("%d ", nb_reg);

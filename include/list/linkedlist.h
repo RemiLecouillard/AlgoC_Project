@@ -25,6 +25,12 @@ typedef struct node* Node;
   */
 typedef struct linkedlist* LinkedList;
 
+/** This is an iterator.
+  * To go to the first occurence of a list you need
+  * to call moveNext one. Then call it for each occurence.
+  */
+typedef struct iterator* Iterator;
+
 #include "fct/region.h"
 
 /** Creates a LinkedList.
@@ -87,31 +93,30 @@ void destroyList(LinkedList list);
 
 /** Returns an object to iterate the list.
   * @param list the list to perform operations
-  * @param the first Node of the list
+  * @return An iterator of the list
   */
-Node getIterator(LinkedList list);
+Iterator getIterator(LinkedList list);
 
-/** Tells if there is an other node after.
-  * @param node the node the perform the operations.
-  * @return 1 if has a next node. 0 otherwise.
+/** Moves the iterator to the next Node
+  * @param iter the iteratir
+  * @return 1 if the iter has moved. 0 otherwise.
   */
-int hasNext(Node node);
-
-/**
-  * @param node the node the perform the operations.
-  * @return the next Node
-  */
-Node getNext(Node node);
+int moveNext(Iterator iter);
 
 /**
-  * @param node the node the perform the operations.
-  * @return the Region in the Node
+  * @param iter the iterator to perform the operations.
+  * @return the Region in where the iterator is pointing.
   */
-Region getElement(Node node);
+Region getElement(Iterator iter);
 
 /**
-  * @param node the node the perform the operations.
+  * @param node the node to perform the operations.
   */
 void destroyNode(Node node);
+
+/**
+  * @param iter the Iterator to perform the operations.
+  */
+void destroyIterator(Iterator iter);
 
 #endif
