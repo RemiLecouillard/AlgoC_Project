@@ -82,6 +82,8 @@ void fusion(Region reg1,Region reg2){
   struct region* res = malloc(sizeof(struct region));
 
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
+  res->neighbourgs = mergeList(reg1->region->neighbourgs, reg2->region->neighbourgs);
+  res->quadraticError = getFusionCost(reg1, reg2);
 
   destroyStructRegion(reg1->region);
   destroyStructRegion(reg2->region);
