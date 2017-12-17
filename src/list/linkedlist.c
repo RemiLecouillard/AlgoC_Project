@@ -84,7 +84,10 @@ int getIndex(LinkedList list,Region reg){
 
   index = 0;
 
-  while(!isSame(getElement(iter), reg) && moveNext(iter)) {
+  while(moveNext(iter)) {
+    if(isSame(getElement(iter), reg)) {
+      break;
+    }
     index++;
   }
 
@@ -106,7 +109,10 @@ int deleteRegion(LinkedList list,Region reg){
 
   do{
     last = iter->current;
-  } while (!isSame(getElement(iter), reg) && moveNext(iter));
+    if (isSame(getElement(iter), reg)) {
+      break;
+    }
+  } while (moveNext(iter));
 
   /* if the region has been found */
   if (isSame(getElement(iter), reg)) {

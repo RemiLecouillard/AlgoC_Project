@@ -98,7 +98,10 @@ void addNeighbourg(Region region, Region neighbourg){
 }
 
 int isSame(Region r1,Region r2) {
-  return r1->region == r2->region ? 1 : 0;
+  if(r1 != NULL && r2 != NULL) {
+    return r1->region == r2->region ? 1 : 0;
+  }
+  return 0;
 }
 
 rgb getColor(Region reg) {
