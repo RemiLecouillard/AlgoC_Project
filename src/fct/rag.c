@@ -106,14 +106,13 @@ static void initNeighbourgs(Rag rag) {
   Region neighbourg = NULL;
   LinkedList list = getBlocks(rag);
   Iterator iter = getIterator(list);
-  int index;
+  int index = 0;
   int width = image_give_largeur(rag->image)/rag->width;
   int height = image_give_hauteur(rag->image)/rag->height;
 
   /*Route all regions of the RAG*/
   while(moveNext(iter)) {
     region = getElement(iter);
-    index = getIndex(list, region);
 
     /*left neighbourg*/
     if((index-1)%width != width-1 && (index-1)%width != -1){
@@ -135,6 +134,7 @@ static void initNeighbourgs(Rag rag) {
       neighbourg = get(list, index+width);
       addNeighbourg(region, neighbourg);
     }
+    index++;
   }
 }
 

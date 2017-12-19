@@ -9,6 +9,7 @@
  */
  #include <stdio.h>
  #include <stdlib.h>
+ #include <time.h>
  #include "image/image.h"
  #include "list/linkedlist.h"
  #include "fct/region.h"
@@ -29,6 +30,10 @@
      int nb_reg;
      int num_reg = 0;
      Iterator iter, iter_neighbour = NULL;
+     clock_t start, end;
+     double exec_time;
+
+     start = clock();
 
      input = FAIRE_image();
      image_charger(input, input_name);
@@ -48,8 +53,13 @@
 
      rag = createRag(input, x, y);
 
-     if(rag != NULL){
+      end = clock();
+      exec_time = (double)(end - start) / CLOCKS_PER_SEC;
+      printf("Execution time : %f\n", exec_time);
+      printf("\n");
 
+     if(rag != NULL){
+       
        iter = getIterator(getBlocks(rag));
 
        while(moveNext(iter)) {
@@ -89,6 +99,7 @@
    }else{
      printf("Too much arguments\n");
    }
+
 
    return 0;
 
