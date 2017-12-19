@@ -69,4 +69,9 @@ rgb getM1(Moments moments);
   */
 rgb getM2(Moments moments);
 
+/** Cumputes the quadraticError of the moments
+  */
+double getQE(Moments moments);
+
+
 #endif

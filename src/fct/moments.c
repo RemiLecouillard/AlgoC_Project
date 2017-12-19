@@ -96,10 +96,16 @@ static rgb computeM2(int** pixels,int nbPixels){
   m2.blue = 0;
 
   for (i = 0; i < nbPixels; i ++) {
-    m2.red += pow(pixels[i][0], 2);
-    m2.green += pow(pixels[i][1], 2);
-    m2.blue += pow(pixels[i][2], 2);
+    m2.red += pow((double)pixels[i][0], 2);
+    m2.green += pow((double)pixels[i][1], 2);
+    m2.blue += pow((double)pixels[i][2], 2);
   }
 
   return m2;
+}
+
+double getQE(Moments moments) {
+  return (getM2(moments).red - pow(getM1(moments).red/(double)getM0(moments), 2)) +
+    (getM2(moments).green - pow(getM1(moments).green/(double)getM0(moments), 2)) +
+    (getM2(moments).blue - pow(getM1(moments).blue/(double)getM0(moments), 2));
 }

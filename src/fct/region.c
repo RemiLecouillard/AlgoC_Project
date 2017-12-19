@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 
 struct pRegion{
   struct region *region;
@@ -34,20 +35,17 @@ static void destroyStructRegion(struct region* region);
 Region createRegion(int** pixels,int nbPixels){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
-  rgb rgb;
-  int i;
-  preg->region = reg;
 
+  preg->region = reg;
   reg->moments = createMoments(pixels, nbPixels);
   reg->neighbours = createList();
-  reg->quadraticError = 0;
+  reg->quadraticError = getQE(reg->moments);
 
-  rgb = getColor(preg);
-
+  /*rgb = getColor(preg);
   for (i = 0; i < nbPixels; i ++) {
-    reg->quadraticError += pow(pixels[i][0] - rgb.green, 2) + pow(pixels[i][1]
-    - rgb.blue, 2) + pow(pixels[i][2] - rgb.red, 2);
-  }
+    reg->quadraticError += pow((double)pixels[i][0] - rgb.red, 2) + pow((double)pixels[i][1]
+    - rgb.green, 2) + pow((double)pixels[i][2] - rgb.blue, 2);
+  }*/
 
   return preg;
 }
@@ -57,24 +55,24 @@ void destroyRegion(Region region){
   free(region);
 }
 
-Region getBestNeighbours(Region region){
+Region getBestNeighbours(Region region,double* cost){
   struct region* self = region->region;
   Iterator iterator;
   double min, tmp;
   Region current, best;
 
-  min = 0;
+  min = DBL_MAX;
   iterator = getIterator(self->neighbours);
 
   while(moveNext(iterator)) {
     current = getElement(iterator);
     tmp = getFusionCost(region, current);
-    if (tmp > min) {
+    if (tmp < min) {
       min = tmp;
       best = current;
     }
   }
-
+  *cost = min;
   return best;
 }
 
