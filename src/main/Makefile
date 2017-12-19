@@ -2,7 +2,7 @@
 .PHONY: clean
 
 CC = gcc
-CFLAGS = -W -Wall -ansi -pedantic
+CFLAGS = -W -Wall -pedantic
 LDFLAGS = -limage64 -lm
 
 #DIRECTORIES
