@@ -69,10 +69,9 @@ image getRegionImage(Rag rag) {
     rgb[0] = color.red;
     rgb[1] = color.green;
     rgb[2] = color.blue;
-
     /*Set the same color to all the pixels in the block*/
     for (pos_y = line*rag->height; pos_y < (line+1)*rag->height; pos_y++) {
-      for (pos_x = (index%nb_bloc_width)*rag->width; pos_x < ((index+1)%nb_bloc_width)*rag->width; pos_x++) {
+      for (pos_x = (index%nb_bloc_width)*rag->width; pos_x < ((index%nb_bloc_width)+1)*rag->width; pos_x++) {
         COORDX(position) = pos_x;
         COORDY(position) = pos_y;
         image_move_to(img, &position);
