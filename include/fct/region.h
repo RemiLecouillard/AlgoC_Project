@@ -23,7 +23,7 @@ Region createRegion(int** pixels,int nbPixels);
 
 void destroyRegion(Region region);
 
-Region getBestNeighbours(Region region);
+Region getBestNeighbours(Region region,double* cost);
 
 void fusion(Region reg1,Region reg2);
 

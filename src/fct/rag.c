@@ -150,9 +150,6 @@ static LinkedList initRegion(Rag rag) {
   Point position;
   /*initialize the list of pixels included in one bloc*/
   pix = malloc(sizeof(int*) * rag->height*rag->width);
-  for (i=0; i < 3; i++) {
-    pix[i] = malloc(sizeof(int));
-  }
 
   image_debut(rag->image);
   /*route the image block by block*/
@@ -164,11 +161,13 @@ static LinkedList initRegion(Rag rag) {
           COORDX(position) = pos_pix_x;
           COORDY(position) = pos_pix_y;
           image_move_to(rag->image, &position);
-          pix[num_pix] = image_lire_pixel(rag->image);
+          pix[num_pix] = malloc(sizeof(int)*3);
+          pix[num_pix][0] =image_lire_pixel(rag->image)[0];
+          pix[num_pix][1] =image_lire_pixel(rag->image)[1];
+          pix[num_pix][2] =image_lire_pixel(rag->image)[2];
           num_pix++;
         }
       }
-
       /*Convert the block into a region*/
       reg = createRegion(pix, num_pix);
       addRegion(list, reg);
