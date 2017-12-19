@@ -25,7 +25,7 @@ struct rag {
   LinkedList blocks;
 };
 
-static void initNeighbourgs(Rag rag);
+static void initNeighbours(Rag rag);
 
 static LinkedList initRegion(Rag rag);
 
@@ -36,7 +36,7 @@ Rag createRag(image img,int height,int width) {
     rag->height = height;
     rag->width = width;
     rag->blocks = initRegion(rag);
-    initNeighbourgs(rag);
+    initNeighbours(rag);
     return rag;
   }else{
     printf("Block size impossible\n");
@@ -101,7 +101,7 @@ LinkedList getBlocks(Rag rag) {
  return rag->blocks;
 }
 
-static void initNeighbourgs(Rag rag) {
+static void initNeighbours(Rag rag) {
   Region region = NULL;
   Region neighbourg = NULL;
   LinkedList list = getBlocks(rag);

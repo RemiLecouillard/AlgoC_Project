@@ -23,7 +23,7 @@ struct pRegion{
 
 struct region{
   Moments moments;
-  LinkedList neighbourgs;
+  LinkedList neighbours;
   double quadraticError;
 };
 
@@ -39,7 +39,7 @@ Region createRegion(int** pixels,int nbPixels){
   preg->region = reg;
 
   reg->moments = createMoments(pixels, nbPixels);
-  reg->neighbourgs = createList();
+  reg->neighbours = createList();
   reg->quadraticError = 0;
 
   rgb = getColor(preg);
@@ -57,14 +57,14 @@ void destroyRegion(Region region){
   free(region);
 }
 
-Region getBestNeighbourgs(Region region){
+Region getBestNeighbours(Region region){
   struct region* self = region->region;
   Iterator iterator;
   double min, tmp;
   Region current, best;
 
   min = 0;
-  iterator = getIterator(self->neighbourgs);
+  iterator = getIterator(self->neighbours);
 
   while(moveNext(iterator)) {
     current = getElement(iterator);
@@ -82,7 +82,7 @@ void fusion(Region reg1,Region reg2){
   struct region* res = malloc(sizeof(struct region));
 
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
-  res->neighbourgs = mergeList(reg1->region->neighbourgs, reg2->region->neighbourgs);
+  res->neighbours = mergeList(reg1->region->neighbours, reg2->region->neighbours);
   res->quadraticError = getFusionCost(reg1, reg2);
 
   destroyStructRegion(reg1->region);
@@ -91,12 +91,12 @@ void fusion(Region reg1,Region reg2){
   reg2->region = res;
 }
 
-LinkedList getNeighbourgs(Region reg){
-  return reg->region->neighbourgs;
+LinkedList getNeighbours(Region reg){
+  return reg->region->neighbours;
 }
 
 void addNeighbourg(Region region, Region neighbourg){
-  addRegion(getNeighbourgs(region), neighbourg);
+  addRegion(getNeighbours(region), neighbourg);
 }
 
 int isSame(Region r1,Region r2) {
@@ -134,6 +134,6 @@ static double getFusionCost(Region reg1,Region reg2){
 
 static void destroyStructRegion(struct region* region) {
   destroyMoments(region->moments);
-  destroyList(region->neighbourgs);
+  destroyList(region->neighbours);
   free(region);
 }

@@ -23,11 +23,11 @@ Region createRegion(int** pixels,int nbPixels);
 
 void destroyRegion(Region region);
 
-Region getBestNeighbourgs(Region region);
+Region getBestNeighbours(Region region);
 
 void fusion(Region reg1,Region reg2);
 
-LinkedList getNeighbourgs(Region reg);
+LinkedList getNeighbours(Region reg);
 
 void addNeighbourg(Region region,Region neighbourg);
 

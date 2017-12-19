@@ -59,7 +59,7 @@
       printf("\n");
 
      if(rag != NULL){
-       
+
        iter = getIterator(getBlocks(rag));
 
        while(moveNext(iter)) {
@@ -67,9 +67,9 @@
          color = getColor(region);
          printf("Region %d => R:%d G:%d B:%d\n", num_reg, (int)color.red, (int)color.green, (int)color.blue);
 
-         iter_neighbour = getIterator(getNeighbourgs(region));
+         iter_neighbour = getIterator(getNeighbours(region));
 
-         printf("--> neighbourgs regions : ");
+         printf("--> neighbours regions : ");
 
          while(moveNext(iter_neighbour)) {
            region_neighbour = getElement(iter_neighbour);
@@ -84,7 +84,6 @@
        foutput = fopen(output_name, "w+");
        if(foutput != NULL){
          image_to_stream(output, foutput);
-         fclose(foutput);
          system("sudo emacs img/output.ppm &");
        }else{
          printf("Output file opening failed.\nYou should execute the program with sudo\n");
