@@ -35,4 +35,6 @@ int isSame(Region r1,Region r2);
 
 rgb getColor(Region reg);
 
+double getQuadraticError(Region rag);
+
 #endif
