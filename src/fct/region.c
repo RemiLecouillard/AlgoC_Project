@@ -25,7 +25,6 @@ struct pRegion{
 struct region{
   Moments moments;
   LinkedList neighbours;
-  double quadraticError;
 };
 
 static double getFusionCost(Region reg1,Region reg2);
@@ -39,13 +38,6 @@ Region createRegion(int** pixels,int nbPixels){
   preg->region = reg;
   reg->moments = createMoments(pixels, nbPixels);
   reg->neighbours = createList();
-  reg->quadraticError = getQE(reg->moments);
-
-  /*rgb = getColor(preg);
-  for (i = 0; i < nbPixels; i ++) {
-    reg->quadraticError += pow((double)pixels[i][0] - rgb.red, 2) + pow((double)pixels[i][1]
-    - rgb.green, 2) + pow((double)pixels[i][2] - rgb.blue, 2);
-  }*/
 
   return preg;
 }
@@ -136,6 +128,6 @@ static void destroyStructRegion(struct region* region) {
   free(region);
 }
 
-double getQuadraticError(Region rag) {
-  return rag->quadraticError;
+double getQuadraticError(Region reg) {
+  return getQE(reg->region->moments);
 }
