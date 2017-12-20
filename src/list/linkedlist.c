@@ -103,21 +103,17 @@ int deleteRegion(LinkedList list,Region reg){
 
   while(moveNext(iter)) {
     if (isSame(getElement(iter), reg)) {
+      last->next = iter->current->next;
+      destroy(iter->current);
+      if(last->next == NULL) {  /* if it is the last member */
+        list->last = last;
+      }
+
+      list->size = list->size - 1;
+      isDeleted = 1;
       break;
     }
     last = iter->current;
-  }
-
-  /* if the region has been found */
-  if (isSame(getElement(iter), reg)) {
-    last->next = iter->current->next;
-
-    if(last->next == NULL) {  /* if it is the last member */
-      list->last = last;
-    }
-
-    list->size = list->size - 1;
-    isDeleted = 1;
   }
 
   destroyIterator(iter);
