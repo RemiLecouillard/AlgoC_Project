@@ -79,7 +79,7 @@ void addRegion(LinkedList list,Region reg);
 int getSize(LinkedList list);
 
 /** Merges two lists by creating an other one.
-  * The old ones are still usable.
+  * The old ones are destroyed. You shouldn't use them after.
   * @param l1 the first list to merge
   * @param l2 the second list to merge
   * @return the new list

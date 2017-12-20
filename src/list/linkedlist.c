@@ -31,12 +31,6 @@ struct iterator {
   Node current;
 };
 
-/** Copies a Node. Without its next pointer.
-  * @param node the node the perform the operations.
-  * @return the copy of the node.
-  */
-static Node copyNode(Node node);
-
 LinkedList createList(){
   LinkedList list = malloc(sizeof(struct linkedlist));
   list->size = 0;
@@ -155,35 +149,15 @@ int getSize(LinkedList list){
 
 LinkedList mergeList(LinkedList l1, LinkedList l2){
   LinkedList list = createList();
-  Iterator iter;
-  Node last, tmp;
 
-  iter = getIterator(l1);
-  if (moveNext(iter)) {
-    /* Init the first element of the list */
-    last = copyNode(iter->current);
-    list->first = last;
-  }
+  list->first = l1->first;
+  l1->last->next = l2->first;
+  list->last = l2->last;
 
-  /* copy the first list in the new list */
-  while(moveNext(iter)) {
-    tmp = copyNode(iter->current);
-    last->next = tmp;
-    last =tmp;
-  }
-
-  destroyIterator(iter);
-  iter = getIterator(l2);
-  /* copy the second list in the new list */
-  while(moveNext(iter)) {
-    tmp = copyNode(iter->current);
-    last->next = tmp;
-    last =tmp;
-  }
-
-  list->last = last;
   list->size = l1->size + l2->size;
-
+  /* Don't call destroy because it will destroy the nodes */
+  free(l1);
+  free(l2);
   return list;
 }
 
@@ -196,12 +170,6 @@ void destroyList(LinkedList list){
 
   destroyIterator(iter);
   free(list);
-}
-
-static Node copyNode(Node node){
-  Node new = malloc(sizeof(struct node));
-  new->element = node->element;
-  return new;
 }
 
 Iterator getIterator(LinkedList list){
