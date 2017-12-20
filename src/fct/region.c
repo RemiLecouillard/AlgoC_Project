@@ -64,6 +64,7 @@ Region getBestNeighbours(Region region,double* cost){
       best = current;
     }
   }
+  destroyIterator(iterator);
   *cost = min;
   return best;
 }
