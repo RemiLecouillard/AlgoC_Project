@@ -73,7 +73,6 @@ void fusion(Region reg1,Region reg2){
 
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
   res->neighbours = mergeList(reg1->region->neighbours, reg2->region->neighbours);
-  res->quadraticError = getQE(res->moments);
 
   destroyStructRegion(reg1->region);
   destroyStructRegion(reg2->region);
