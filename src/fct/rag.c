@@ -22,12 +22,14 @@
 struct rag {
   image image;
   int height, width;
+  double partitionError;
   LinkedList blocks;
 };
 
 static void initNeighbours(Rag rag);
 
 static LinkedList initRegion(Rag rag);
+
 
 Rag createRag(image img,int height,int width) {
   Rag rag = malloc(sizeof(struct rag));
@@ -100,6 +102,10 @@ LinkedList getBlocks(Rag rag) {
  return rag->blocks;
 }
 
+double getPartitionError(Rag rag){
+  return rag->partitionError;
+}
+
 static void initNeighbours(Rag rag) {
   Region region = NULL;
   Region neighbourg = NULL;
@@ -144,10 +150,11 @@ static LinkedList initRegion(Rag rag) {
   int width = image_give_largeur(rag->image);
   int pos_bloc_x, pos_bloc_y;
   int pos_pix_x, pos_pix_y;
-  int i;
   int** pix;
   int num_pix = 0;
   Point position;
+  double partitionError = 0.0;
+
   /*initialize the list of pixels included in one bloc*/
   pix = malloc(sizeof(int*) * rag->height*rag->width);
 
@@ -172,8 +179,11 @@ static LinkedList initRegion(Rag rag) {
       reg = createRegion(pix, num_pix);
       addRegion(list, reg);
       num_pix = 0;
+      partitionError += getQuadraticError(reg);
     }
   }
+
+  rag->partitionError = partitionError;
 
   return list;
 }

@@ -14,6 +14,7 @@
  #include "list/linkedlist.h"
  #include "fct/region.h"
  #include "fct/rag.h"
+ #include "fct/algo.h"
 
  int main(int argc,char* argv[]){
 
@@ -79,6 +80,8 @@
          printf("\n");
          num_reg++;
        }
+
+       segmentateRegion(rag, 999999999999.0);
 
        output = getRegionImage(rag);
        foutput = fopen(output_name, "w+");

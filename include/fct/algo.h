@@ -13,8 +13,10 @@
 #ifndef _ALGO_H
 #define _ALGO_H
 
+#include "image/image.h"
 #include "fct/rag.h"
 
-void segmentateRegion(RAG rag);
+
+void segmentateRegion(Rag rag, double limit);
 
 #endif

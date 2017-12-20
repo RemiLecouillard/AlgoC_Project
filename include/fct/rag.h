@@ -26,6 +26,8 @@ int getHeight(Rag rag);
 
 int getWidth(Rag rag);
 
+double getPartitionError(Rag rag);
+
 LinkedList getBlocks(Rag rag);
 
 #endif
