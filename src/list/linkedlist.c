@@ -101,12 +101,12 @@ int deleteRegion(LinkedList list,Region reg){
 
   isDeleted = 0;
 
-  do{
-    last = iter->current;
+  while(moveNext(iter)) {
     if (isSame(getElement(iter), reg)) {
       break;
     }
-  } while (moveNext(iter));
+    last = iter->current;
+  }
 
   /* if the region has been found */
   if (isSame(getElement(iter), reg)) {
