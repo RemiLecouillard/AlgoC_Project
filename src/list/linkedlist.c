@@ -28,6 +28,7 @@ struct linkedlist {
 };
 
 struct iterator {
+  Node first;
   Node current;
 };
 
@@ -42,9 +43,9 @@ Region get(LinkedList list,int index){
 
   assert(list->size > index);
 
-  while(index--) {
+  do {
     moveNext(iter);
-  }
+  }while(index--);
 
   return getElement(iter);
 }
@@ -96,19 +97,26 @@ int getIndex(LinkedList list,Region reg){
 
 int deleteRegion(LinkedList list,Region reg){
   Iterator iter = getIterator(list);
-  Node last;
+  Node last = NULL;
   int isDeleted;
 
   isDeleted = 0;
 
   while(moveNext(iter)) {
     if (isSame(getElement(iter), reg)) {
-      last->next = iter->current->next;
-      destroy(iter->current);
-      if(last->next == NULL) {  /* if it is the last member */
-        list->last = last;
+      if (last == NULL) {
+        list->first = iter->current->next;
+        if(list->last == iter->current) {  /* if it is the last member */
+          list->last = list->first;
+        }
+      } else {
+        last->next = iter->current->next;
+        if(list->last == iter->current) {  /* if it is the last member */
+          list->last = last;
+        }
       }
 
+      destroyNode(iter->current);
       list->size = list->size - 1;
       isDeleted = 1;
       break;
@@ -169,10 +177,11 @@ void destroyList(LinkedList list){
 }
 
 Iterator getIterator(LinkedList list){
-  Iterator iter = malloc(sizeof(Iterator));
-  Node first = malloc(sizeof(Node));
+  Iterator iter = malloc(sizeof(struct iterator));
+  Node first = malloc(sizeof(struct node));
   first->next = list->first;
   iter->current = first;
+  iter->first = first;
   return iter;
 }
 
@@ -199,5 +208,6 @@ Region getElement(Iterator iter){
 }
 
 void destroyIterator(Iterator iter) {
+  destroyNode(iter->first);
   free(iter);
 }

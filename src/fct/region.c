@@ -74,8 +74,10 @@ void fusion(Region reg1,Region reg2){
 
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
   res->neighbours = mergeList(reg1->region->neighbours, reg2->region->neighbours);
-  destroyStructRegion(reg1->region);
-  destroyStructRegion(reg2->region);
+  free(reg1->region->moments);
+  free(reg2->region->moments);
+  free(reg1->region);
+  free(reg2->region);
   reg1->region = res;
   reg2->region = res;
   while(deleteRegion(res->neighbours, reg1));

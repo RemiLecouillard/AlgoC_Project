@@ -118,28 +118,33 @@ static void initNeighbours(Rag rag) {
   /*Route all regions of the RAG*/
   while(moveNext(iter)) {
     region = getElement(iter);
-
+    printf("%p (%d) => ", region, index);
     /*left neighbourg*/
     if((index-1)%width != width-1 && (index-1)%width != -1){
       neighbourg = get(list, index-1);
+      printf("L : %p (%d)", neighbourg,  index-1);
       addNeighbourg(region, neighbourg);
     }
     /*right neighbourg*/
     if((index+1)%width != 0){
       neighbourg = get(list, index+1);
+      printf("R : %p (%d)", neighbourg, index+1);
       addNeighbourg(region, neighbourg);
     }
     /*neighbourg from above*/
     if(index-width >= 0){
       neighbourg = get(list, index-width);
+      printf("A : %p (%d)", neighbourg, index-width);
       addNeighbourg(region, neighbourg);
     }
     /* neighbourg from bellow*/
     if(index+width < width*height){
       neighbourg = get(list, index+width);
+      printf("B : %p (%d)", neighbourg, index+width);
       addNeighbourg(region, neighbourg);
     }
     index++;
+      printf("\n");
   }
 }
 

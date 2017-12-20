@@ -60,13 +60,12 @@
       printf("\n");
 
      if(rag != NULL){
-
        iter = getIterator(getBlocks(rag));
 
        while(moveNext(iter)) {
          region = getElement(iter);
          color = getColor(region);
-         printf("Region %d => R:%d G:%d B:%d\n", num_reg, (int)color.red, (int)color.green, (int)color.blue);
+         printf("Region %p => R:%d G:%d B:%d\n", region, (int)color.red, (int)color.green, (int)color.blue);
 
          iter_neighbour = getIterator(getNeighbours(region));
 
@@ -75,7 +74,7 @@
          while(moveNext(iter_neighbour)) {
            region_neighbour = getElement(iter_neighbour);
            nb_reg =  getIndex(getBlocks(rag),region_neighbour);
-           printf("%d ", nb_reg);
+           printf("%p ", region_neighbour);
          }
          printf("\n");
          num_reg++;
