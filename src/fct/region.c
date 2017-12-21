@@ -20,6 +20,7 @@
 
 struct pRegion{
   struct region *region;
+  Region father;
 };
 
 struct region{
@@ -31,11 +32,16 @@ static double getFusionCost(Region reg1,Region reg2);
 
 static void destroyStructRegion(struct region* region);
 
+static Region getPRegion(Region reg);
+
+static struct region* getRegion(Region reg);
+
 Region createRegion(int** pixels,int nbPixels){
   struct region *reg = malloc(sizeof(struct region));
   Region preg = malloc(sizeof(struct pRegion));
 
   preg->region = reg;
+  preg->father = preg;
   reg->moments = createMoments(pixels, nbPixels);
   reg->neighbours = createList();
 
@@ -47,8 +53,22 @@ void destroyRegion(Region region){
   free(region);
 }
 
+static struct region* getRegion(Region reg) {
+  while(reg != reg->father) {
+    reg = reg->father;
+  }
+  return reg->region;
+}
+
+static Region getPRegion(Region reg) {
+  while(reg != reg->father) {
+    reg = reg->father;
+  }
+  return reg;
+}
+
 Region getBestNeighbours(Region region,double* cost){
-  struct region* self = region->region;
+  struct region* self = getRegion(region);
   Iterator iterator;
   double min, tmp;
   Region current, best;
@@ -72,19 +92,19 @@ Region getBestNeighbours(Region region,double* cost){
 void fusion(Region reg1,Region reg2){
   struct region* res = malloc(sizeof(struct region));
 
+  reg1 = getPRegion(reg1);
+  reg2 = getPRegion(reg2);
   res->moments = mergeMoments(reg1->region->moments, reg2->region->moments);
   res->neighbours = mergeList(reg1->region->neighbours, reg2->region->neighbours);
-  free(reg1->region->moments);
-  free(reg2->region->moments);
-  free(reg1->region);
-  free(reg2->region);
+
+  reg2->father = reg1;
   reg1->region = res;
-  reg2->region = res;
+
   while(deleteRegion(res->neighbours, reg1));
 }
 
 LinkedList getNeighbours(Region reg){
-  return reg->region->neighbours;
+  return getRegion(reg)->neighbours;
 }
 
 void addNeighbourg(Region region, Region neighbourg){
@@ -93,15 +113,19 @@ void addNeighbourg(Region region, Region neighbourg){
 
 int isSame(Region r1,Region r2) {
   if(r1 != NULL && r2 != NULL) {
-    return r1->region == r2->region ? 1 : 0;
+    return getRegion(r1) == getRegion(r2) ? 1 : 0;
   }
   return 0;
 }
 
 rgb getColor(Region reg) {
-  int nbPixels = getM0(reg->region->moments);
-  rgb col = getM1(reg->region->moments);
+  int nbPixels;
+  rgb col;
+  struct region* region;
 
+  region = getRegion(reg);
+  nbPixels = getM0(region->moments);
+  col = getM1(region->moments);
   /* each section of rgb is a sum of all pixels. To get the average colors
   of the region we must devide it by the number of pixels */
   col.red = col.red/nbPixels;
@@ -114,8 +138,8 @@ static double getFusionCost(Region reg1,Region reg2){
   double cost, norm;
   Moments A,B;
   rgb col;
-  A = reg1->region->moments;
-  B = reg2->region->moments;
+  A = getRegion(reg1)->moments;
+  B = getRegion(reg2)->moments;
   col.red = getColor(reg1).red - getColor(reg2).red;
   col.green = getColor(reg1).green - getColor(reg2).green;
   col.blue = getColor(reg1).blue - getColor(reg2).blue;
@@ -131,5 +155,5 @@ static void destroyStructRegion(struct region* region) {
 }
 
 double getQuadraticError(Region reg) {
-  return getQE(reg->region->moments);
+  return getQE(getRegion(reg)->moments);
 }

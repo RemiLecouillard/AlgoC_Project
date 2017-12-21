@@ -28,7 +28,7 @@ void segmentateRegion(Rag rag, double limit) {
   partitionError = getPartitionError(rag);
   cost = 0.0;
   step = 0;
-  end = 200;
+  end = 1017;
   limit *= partitionError;
   printf("Start segmentation\n");
 
@@ -52,7 +52,6 @@ void segmentateRegion(Rag rag, double limit) {
       cost = 0.0;
     }
     printf("%p and %p ... ", bestRegion, bestNeighbour);
-    printf("they are same ? %d\n", isSame(region, neighbour));
     fusion(bestRegion, bestNeighbour);
     printf("Fusion done\n");
     partitionError += bestCost;
