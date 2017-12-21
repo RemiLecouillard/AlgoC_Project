@@ -12,6 +12,7 @@
   */
 
 #include "fct/algo.h"
+#include <float.h>
 
 void segmentateRegion(Rag rag, double limit) {
 
@@ -26,21 +27,23 @@ void segmentateRegion(Rag rag, double limit) {
 
   partitionError = getPartitionError(rag);
   cost = 0.0;
-  bestCost = 0.0;
   step = 0;
-  end = 50;
-
+  end = 200;
+  limit *= partitionError;
   printf("Start segmentation\n");
 
   while(partitionError < limit && step < end) {
+    printf("error %f/%f limit\n", partitionError, limit);
     list = getBlocks(rag);
     iter = getIterator(list);
+    bestCost = DBL_MAX;
+
     printf("Step %d : \n", step);
     while(moveNext(iter)) {
       region = getElement(iter);
-      printf("%p =>", region);
+      /*printf("%p =>\n", region);*/
       neighbour = getBestNeighbours(region, &cost);
-      printf("%p\n", neighbour);
+    /*  printf("\t%p with %f\n", neighbour, cost); */
       if(bestCost >= cost){
         bestCost = cost;
         bestRegion = region;
@@ -48,8 +51,9 @@ void segmentateRegion(Rag rag, double limit) {
       }
       cost = 0.0;
     }
-    printf("%p and %p ... ", region, neighbour);
-    fusion(region, neighbour);
+    printf("%p and %p ... ", bestRegion, bestNeighbour);
+    printf("they are same ? %d\n", isSame(region, neighbour));
+    fusion(bestRegion, bestNeighbour);
     printf("Fusion done\n");
     partitionError += bestCost;
     step++;
