@@ -20,15 +20,23 @@
 
 
 struct rag {
-  image image;
-  int height, width;
-  double partitionError;
-  LinkedList blocks;
+  image image; /** A reference to the original image structure */
+  int height, width; /** The original width and height of each blocks */
+  double partitionError; /** The partition error of the Rag */
+  int dimension; /** image dimension (1=Greyscale, 3=RGB) */
+  LinkedList blocks; /** The list of all original blocks */
 };
 
+/**
+ * initialize the original list of blocks
+ * @param the Rag that will contain the list of blocks
+ */
+static void initRegion(Rag rag);
+/**
+ * initialize the neighbours of all original regions
+ * @param the Rag containing the regions you want initialize their neighbours
+ */
 static void initNeighbours(Rag rag);
-
-static LinkedList initRegion(Rag rag);
 
 
 Rag createRag(image img,int height,int width) {
@@ -37,7 +45,8 @@ Rag createRag(image img,int height,int width) {
   if(image_give_largeur(img)%width == 0 && image_give_hauteur(img)%height == 0){
     rag->height = height;
     rag->width = width;
-    rag->blocks = initRegion(rag);
+    rag->dimension = image_give_dim(img);
+    initRegion(rag);
     initNeighbours(rag);
     return rag;
   }else{
@@ -59,7 +68,7 @@ image getRegionImage(Rag rag) {
   int img_width = image_give_largeur(rag->image);
   int nb_bloc_width = img_width/rag->width;
 
-  image_initialize(img, 3, img_width ,img_height);
+  image_initialize(img, image_give_dim(rag->image), img_width ,img_height);
   image_debut(img);
   index = 0;
   line = 0;
@@ -98,6 +107,10 @@ int getWidth(Rag rag) {
   return rag->width;
 }
 
+int getDimension(Rag rag) {
+  return rag->dimension;
+}
+
 LinkedList getBlocks(Rag rag) {
  return rag->blocks;
 }
@@ -118,37 +131,31 @@ static void initNeighbours(Rag rag) {
   /*Route all regions of the RAG*/
   while(moveNext(iter)) {
     region = getElement(iter);
-    printf("%p (%d) => ", region, index);
     /*left neighbourg*/
     if((index-1)%width != width-1 && (index-1)%width != -1){
       neighbourg = get(list, index-1);
-      printf("L : %p (%d)", neighbourg,  index-1);
       addNeighbourg(region, neighbourg);
     }
     /*right neighbourg*/
     if((index+1)%width != 0){
       neighbourg = get(list, index+1);
-      printf("R : %p (%d)", neighbourg, index+1);
       addNeighbourg(region, neighbourg);
     }
     /*neighbourg from above*/
     if(index-width >= 0){
       neighbourg = get(list, index-width);
-      printf("A : %p (%d)", neighbourg, index-width);
       addNeighbourg(region, neighbourg);
     }
     /* neighbourg from bellow*/
     if(index+width < width*height){
       neighbourg = get(list, index+width);
-      printf("B : %p (%d)", neighbourg, index+width);
       addNeighbourg(region, neighbourg);
     }
     index++;
-      printf("\n");
   }
 }
 
-static LinkedList initRegion(Rag rag) {
+static void initRegion(Rag rag) {
   LinkedList list = createList();
   Region reg = NULL;
   int height = image_give_hauteur(rag->image);
@@ -174,9 +181,15 @@ static LinkedList initRegion(Rag rag) {
           COORDY(position) = pos_pix_y;
           image_move_to(rag->image, &position);
           pix[num_pix] = malloc(sizeof(int)*3);
-          pix[num_pix][0] =image_lire_pixel(rag->image)[0];
-          pix[num_pix][1] =image_lire_pixel(rag->image)[1];
-          pix[num_pix][2] =image_lire_pixel(rag->image)[2];
+          pix[num_pix][0] = image_lire_pixel(rag->image)[0];
+          /*If RGB get the 3 colors, else, convert the color into grey*/
+          if(rag->dimension == 3){
+            pix[num_pix][1] = image_lire_pixel(rag->image)[1];
+            pix[num_pix][2] = image_lire_pixel(rag->image)[2];
+          }else{
+            pix[num_pix][1] = pix[num_pix][0];
+            pix[num_pix][2] = pix[num_pix][0];
+          }
           num_pix++;
         }
       }
@@ -189,6 +202,6 @@ static LinkedList initRegion(Rag rag) {
   }
 
   rag->partitionError = partitionError;
+  rag->blocks = list;
 
-  return list;
 }
