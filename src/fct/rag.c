@@ -136,16 +136,6 @@ static void initNeighbours(Rag rag) {
       neighbourg = get(list, index-1);
       addNeighbourg(region, neighbourg);
     }
-    /*right neighbourg*/
-    if((index+1)%width != 0){
-      neighbourg = get(list, index+1);
-      addNeighbourg(region, neighbourg);
-    }
-    /*neighbourg from above*/
-    if(index-width >= 0){
-      neighbourg = get(list, index-width);
-      addNeighbourg(region, neighbourg);
-    }
     /* neighbourg from bellow*/
     if(index+width < width*height){
       neighbourg = get(list, index+width);

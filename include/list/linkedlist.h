@@ -59,6 +59,12 @@ void deleteIndex(LinkedList list,int index);
   */
 int getIndex(LinkedList list,Region reg);
 
+/** Copies a list
+  * @param list the list to perform operations
+  * @return the copied list
+  */
+LinkedList copyList(LinkedList list);
+
 /** Deletes the given Region.
   * @param list the list to perform operations
   * @param reg the region to erase from the list

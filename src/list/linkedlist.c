@@ -73,6 +73,29 @@ void deleteIndex(LinkedList list,int index){
   list->size = list->size - 1;
 }
 
+static void copy(LinkedList list,Node node,Node current) {
+  Node next;
+  next = malloc(sizeof(struct node));
+  next->element = node->element;
+  if (current == NULL) { /* it means it's the first occurence */
+    list->first = next;
+  } else {
+    current->next = next;
+  }
+  if (node->next == NULL) {
+    list->last = next;
+  } else {
+    copy(list, node->next, next);
+  }
+}
+
+LinkedList copyList(LinkedList list) {
+  LinkedList res = createList();
+  copy(res, list->first, NULL);
+  res->size = list->size;
+  return res;
+}
+
 int getIndex(LinkedList list,Region reg){
   Iterator iter = getIterator(list);
   int index;
