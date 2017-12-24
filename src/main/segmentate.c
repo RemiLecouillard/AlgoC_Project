@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   FILE* foutput;
   double limit;
 
-  limit = 1.001;
+  limit = 1.000628;
   if (argc > 2) {
     x = 4;
     y = 4;

@@ -151,6 +151,12 @@ int getSize(LinkedList list){
   return list->size;
 }
 
+static void empty(LinkedList list) {
+  list->first = NULL;
+  list->last = NULL;
+  list->size = 0;
+}
+
 LinkedList mergeList(LinkedList l1, LinkedList l2){
   LinkedList list = createList();
 
@@ -160,8 +166,8 @@ LinkedList mergeList(LinkedList l1, LinkedList l2){
 
   list->size = l1->size + l2->size;
   /* Don't call destroy because it will destroy the nodes */
-  free(l1);
-  free(l2);
+  empty(l1);
+  empty(l2);
   return list;
 }
 
