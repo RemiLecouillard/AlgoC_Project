@@ -28,21 +28,17 @@ void segmentateRegion(Rag rag, double limit) {
   partitionError = getPartitionError(rag);
   cost = 0.0;
   step = 0;
-  end = 1017;
+  end = 10000000;
   limit *= partitionError;
 
   while(partitionError < limit && step < end) {
-    /*printf("error %f/%f limit\n", partitionError, limit);*/
     list = getBlocks(rag);
     iter = getIterator(list);
     bestCost = DBL_MAX;
 
-    printf("Step %d : ", step);
     while(moveNext(iter)) {
       region = getElement(iter);
-      /*printf("%p =>\n", region);*/
       neighbour = getBestNeighbours(region, &cost);
-    /*  printf("\t%p with %f\n", neighbour, cost); */
       if(bestCost >= cost){
         bestCost = cost;
         bestRegion = region;
@@ -50,9 +46,7 @@ void segmentateRegion(Rag rag, double limit) {
       }
       cost = 0.0;
     }
-    printf("%p and %p ... \n", bestRegion, bestNeighbour);
     fusion(bestRegion, bestNeighbour);
-    /*printf("Fusion done\n");*/
     partitionError += bestCost;
     step++;
     bestCost = 0.0;
