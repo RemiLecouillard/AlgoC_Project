@@ -91,7 +91,6 @@ Region getBestNeighbours(Region region,double* cost){
 
 void fusion(Region reg1,Region reg2){
   struct region* res = malloc(sizeof(struct region));
-  Iterator iterator, iterator_neighbours;
 
   reg1 = getPRegion(reg1);
   reg2 = getPRegion(reg2);
