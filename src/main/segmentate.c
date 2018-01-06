@@ -19,8 +19,12 @@ int main(int argc, char *argv[]) {
   int x, y;
   FILE* foutput;
   double limit;
+  clock_t start, end;
+  double exec_time;
 
-  limit = 1.000628;
+  start = clock();
+
+  limit = 1.000586; /*1.000628*/
   if (argc > 2) {
     x = 4;
     y = 4;
@@ -50,6 +54,11 @@ int main(int argc, char *argv[]) {
   } else {
     perror("Not enough arguments. Please specify a file name\n");
   }
+
+  end = clock();
+  exec_time = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("Execution time : %f sec\n", exec_time);
+  printf("\n");
 
    return 0;
 }

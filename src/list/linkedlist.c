@@ -182,12 +182,20 @@ static void empty(LinkedList list) {
 
 LinkedList mergeList(LinkedList l1, LinkedList l2){
   LinkedList list = createList();
-
-  list->first = l1->first;
-  l1->last->next = l2->first;
-  list->last = l2->last;
-
-  list->size = l1->size + l2->size;
+  if(l1->size == 0){
+    list->first = l2->first;
+    list->last = l2->last;
+    list->size = l2->size;
+  }else if(l2->size == 0){
+    list->first = l1->first;
+    list->last = l1->last;
+    list->size = l1->size;
+  }else{
+    list->first = l1->first;
+    l1->last->next = l2->first;
+    list->last = l2->last;
+    list->size = l1->size + l2->size;
+  }
   /* Don't call destroy because it will destroy the nodes */
   empty(l1);
   empty(l2);
@@ -234,6 +242,30 @@ int moveNext(Iterator iter) {
 
 Region getElement(Iterator iter){
   return iter->current->element;
+}
+
+void removeDuplicates(LinkedList list){
+    Node node, nodeDuplicate;
+    Region reg;
+    Iterator iter;
+    int flagSearch;
+
+    iter = getIterator(list);
+    node = iter->current;
+    while(moveNext(iter) && iter->current->next != NULL) {
+      node = iter->current;
+      flagSearch = 0;
+      reg = getElement(iter);
+      do{
+      if(reg == iter->current->next->element){
+          nodeDuplicate = iter->current->next;
+          iter->current->next = iter->current->next->next;
+          destroyNode(nodeDuplicate);
+          flagSearch = 1;
+        }
+      } while(moveNext(iter) && !flagSearch && iter->current->next != NULL);
+      iter->current = node;
+    }
 }
 
 void destroyIterator(Iterator iter) {

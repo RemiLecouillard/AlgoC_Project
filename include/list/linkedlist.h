@@ -104,7 +104,7 @@ void destroyList(LinkedList list);
 Iterator getIterator(LinkedList list);
 
 /** Moves the iterator to the next Node
-  * @param iter the iteratir
+  * @param iter the iterator
   * @return 1 if the iter has moved. 0 otherwise.
   */
 int moveNext(Iterator iter);
@@ -114,6 +114,12 @@ int moveNext(Iterator iter);
   * @return the Region in where the iterator is pointing.
   */
 Region getElement(Iterator iter);
+
+/**
+  * Remove all duplicates in a list
+  * @param the list where you want to remove duplicates
+  */
+void removeDuplicates(LinkedList list);
 
 /**
   * @param node the node to perform the operations.

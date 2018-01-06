@@ -131,9 +131,9 @@ static void initNeighbours(Rag rag) {
   /*Route all regions of the RAG*/
   while(moveNext(iter)) {
     region = getElement(iter);
-    /*left neighbourg*/
-    if((index-1)%width != width-1 && (index-1)%width != -1){
-      neighbourg = get(list, index-1);
+    /*right neighbourg*/
+    if((index+1)%width != 0){
+      neighbourg = get(list, index+1);
       addNeighbourg(region, neighbourg);
     }
     /* neighbourg from bellow*/
