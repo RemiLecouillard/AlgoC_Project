@@ -4,7 +4,7 @@
 #DIRECTORIES
 SRCDIR = src/
 MAINDIR = main
-SUBDIR = $(addprefix $(SRCDIR), fct list)
+SUBDIR = $(addprefix $(SRCDIR), fct list image)
 
 #COLORS
 CDIR = \033[0;36m

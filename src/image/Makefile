@@ -8,7 +8,7 @@ CFLAGS = -W -Wall -ansi -pedantic -fPIC
 #SOURCES & BINARIES
 ROOT = ../../
 SRCDIR =
-OBJDIR = $(ROOT)obj/image/
+OBJDIR = $(ROOT)obj/
 LIB = $(ROOT)lib
 SRC  = $(wildcard $(SRCDIR)*.c)
 OBJ  = $(SRC:$(SRCDIR)%.c=$(OBJDIR)%.o)
