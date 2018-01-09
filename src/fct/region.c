@@ -104,7 +104,7 @@ void fusion(Region reg1,Region reg2){
   reg1->region = res;
 
   while(deleteRegion(res->neighbours, reg2));
-  removeDuplicates(res->neighbours);
+  /*removeDuplicates(res->neighbours); */
 
 }
 
